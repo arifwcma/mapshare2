@@ -1,7 +1,7 @@
 "use client"
 import { MapContainer, WMSTileLayer } from "react-leaflet"
 import { useEffect, useState } from "react"
-import LayerTree from "@/components/LayerTree"
+import LayerTreeMui from "@/components/LayerTreeMui"
 
 export default function MapPage() {
     const [layers, setLayers] = useState([])
@@ -15,6 +15,10 @@ export default function MapPage() {
 
     const rasters = layers.filter(l => l.type === "raster")
     const vectors = layers.filter(l => l.type === "vector")
+
+    const handleToggle = (id) => {
+        setActive(prev => ({ ...prev, [id]: !prev[id] }))
+    }
 
     return (
         <div style={{ height: "100vh", position: "relative" }}>
@@ -52,7 +56,7 @@ export default function MapPage() {
                     />
                 ))}
             </MapContainer>
-            <LayerTree rasters={rasters} vectors={vectors} onToggle={setActive} />
+            <LayerTreeMui rasters={rasters} vectors={vectors} active={active} onToggle={handleToggle} />
         </div>
     )
 }
