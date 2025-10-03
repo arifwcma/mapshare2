@@ -1,11 +1,8 @@
 "use client"
-import { MapContainer } from "react-leaflet"
-import RasterOnly from "@/components/RasterOnly"
+import dynamic from "next/dynamic"
 
-export default function Test() {
-    return (
-        <MapContainer style={{ height: "100vh" }}>
-            <RasterOnly url="/stawell/rasters/Stawell24RvDepthARI5.tif" />
-        </MapContainer>
-    )
+const TestClient = dynamic(() => import("./TestClient"), { ssr: false })
+
+export default function Page() {
+    return <TestClient />
 }
