@@ -1,9 +1,11 @@
 "use client"
-import { MapContainer, WMSTileLayer, TileLayer } from "react-leaflet"
+import { MapContainer, WMSTileLayer } from "react-leaflet"
 import { useEffect, useState } from "react"
+import LayerTree from "@/components/LayerTree"
 
 export default function MapPage() {
     const [layers, setLayers] = useState([])
+    const [active, setActive] = useState({})
 
     useEffect(() => {
         fetch("/api/wms")
@@ -15,43 +17,42 @@ export default function MapPage() {
     const vectors = layers.filter(l => l.type === "vector")
 
     return (
-        <MapContainer center={[-37.05, 142.8]} zoom={12} style={{ height: "100vh" }}>
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="&copy; OpenStreetMap contributors"
-            />
-            {rasters.map(l => (
-                <WMSTileLayer
-                    key={l.name}
-                    url="http://testpozi.online/cgi-bin/qgis_mapserv.fcgi"
-                    params={{
-                        MAP: "/var/www/qgis_projects/flood_stawell/flood_stawell.qgs",
-                        SERVICE: "WMS",
-                        VERSION: "1.3.0",
-                        REQUEST: "GetMap",
-                        LAYERS: l.name,
-                        STYLES: "default",
-                        FORMAT: "image/png",
-                        TRANSPARENT: true
-                    }}
-                />
-            ))}
-            {vectors.map(l => (
-                <WMSTileLayer
-                    key={l.name}
-                    url="http://testpozi.online/cgi-bin/qgis_mapserv.fcgi"
-                    params={{
-                        MAP: "/var/www/qgis_projects/flood_stawell/flood_stawell.qgs",
-                        SERVICE: "WMS",
-                        VERSION: "1.3.0",
-                        REQUEST: "GetMap",
-                        LAYERS: l.name,
-                        STYLES: "default",
-                        FORMAT: "image/png",
-                        TRANSPARENT: true
-                    }}
-                />
-            ))}
-        </MapContainer>
+        <div style={{ height: "100vh", position: "relative" }}>
+            <MapContainer center={[-37.05, 142.8]} zoom={12} style={{ height: "100%" }}>
+                {rasters.filter(l => active[l.name]).map(l => (
+                    <WMSTileLayer
+                        key={l.name}
+                        url="http://testpozi.online/cgi-bin/qgis_mapserv.fcgi"
+                        params={{
+                            MAP: "/var/www/qgis_projects/flood_stawell/flood_stawell.qgs",
+                            SERVICE: "WMS",
+                            VERSION: "1.3.0",
+                            REQUEST: "GetMap",
+                            LAYERS: l.name,
+                            STYLES: "default",
+                            FORMAT: "image/png",
+                            TRANSPARENT: true
+                        }}
+                    />
+                ))}
+                {vectors.filter(l => active[l.name]).map(l => (
+                    <WMSTileLayer
+                        key={l.name}
+                        url="http://testpozi.online/cgi-bin/qgis_mapserv.fcgi"
+                        params={{
+                            MAP: "/var/www/qgis_projects/flood_stawell/flood_stawell.qgs",
+                            SERVICE: "WMS",
+                            VERSION: "1.3.0",
+                            REQUEST: "GetMap",
+                            LAYERS: l.name,
+                            STYLES: "default",
+                            FORMAT: "image/png",
+                            TRANSPARENT: true
+                        }}
+                    />
+                ))}
+            </MapContainer>
+            <LayerTree rasters={rasters} vectors={vectors} onToggle={setActive} />
+        </div>
     )
 }
