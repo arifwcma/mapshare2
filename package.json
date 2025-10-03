@@ -9,11 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "encoding": "^0.1.13",
     "georaster": "^1.6.0",
     "georaster-layer-for-leaflet": "^4.1.2",
     "geotiff": "^2.1.4-beta.0",
     "leaflet": "^1.9.4",
     "next": "15.5.4",
+    "proj4": "^2.19.10",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0"
