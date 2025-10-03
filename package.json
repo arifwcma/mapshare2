@@ -15,10 +15,12 @@
     "geotiff": "^2.1.4-beta.0",
     "leaflet": "^1.9.4",
     "next": "15.5.4",
+    "node-fetch": "^3.3.2",
     "proj4": "^2.19.10",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
